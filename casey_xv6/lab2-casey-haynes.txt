@@ -1,0 +1,86 @@
+#Casey Haynes Lab2 "Answers" file (documentation)
+
+##### SYSTEM CALL TRACING (1) #####
+
+	I had to edit the "syscall.c" file.
+	I made an array to hold the names of the syscalls (string formatted).
+	I inserted the following print statement to syscall(void) function at the end of the first if statement:
+	"cprintf("%s \t %d\n", syscallnames[num], curproc->tf->eax);"
+
+##### XV6 SYSTEM CALLS (2) #####
+	proc.h: 		Changed proc structure to have NICE value.
+
+	proc.c: 		Initialized the nice value of new processes to 20.
+	        		Added syscall: "get_priority()" implementation code.
+							Added syscall: "set_priority()" implementation code.
+							Edited fork() syscall to initalize the nice value of a new proc to 20.
+
+	syscall.h:	added "#define SYS_set_priority" and "#define SYS_get_priority" and their numbers.
+
+	defs.h:     added "int set_priority(int, int)" and "int get_priority(int)"
+
+	user.h: 		added "int set_priority(int, int)" and "int get_priority(int)"
+
+	sysproc.c:	added: int
+										 sys_set_priority(int pid, int priority)
+										 {
+										 	 return set_priority(pid, priority);
+										 }
+							and:   int
+										 sys_get_priority(int pid)
+										 {
+											 return get_priority(pid);
+										 }
+
+	usys.S:		 added "SYSCALL(set_priority)" and "SYSCALL(get_priority)"
+
+	syscall.c: added "extern int sys_set_priority(void)" and "extern int sys_get_priority(void)"
+	           and   "[SYS_get_priority]			sys_get_priority,"
+						 and   "[SYS_set_priority]			sys_set_priority,"
+						 to the "static int (*syscalls[])(void)" function.
+
+						 Added array of syscall names in this file for system call tracing.
+
+	lab2test.c: Added this file as a user level driver program.
+
+	Makefile:		Added "_lab2test\" to "UPROGS=\" section.
+	            Added "lab2test.c" to "EXTRA=\" section.
+
+	***Please note, I also added Dr. Tong's demo syscall: "cps()", using the same steps outlined above.
+
+##### TIME LOGGING #####
+
+ESTIMATE of time to complete lab: 10 hours
+
+Start Date 							Time Spent 							Work Completed
+9/12										4pm-6pm									Followed Dr. Tong's Guide for adding system calls,
+                                                learned the structure of xv6 OS and tinkered around
+																								with how the files interact and how the system works.
+																								Implemented System Call Tracing.
+
+9/13										1pm-6pm									Implemented set_priority and get_priority.
+                                                Implemented user-level test program.
+																								Debugged variables not being passed to the syscalls.
+
+9/14										6:30pm-8:30pm						Researched variable passing issue. Discovered existence
+                                                of argint() helper function and how the user stack and
+																								kernel stacks interact. Fixed the problem.
+																								Cleaned up the user level test program.
+																								Documented changes to files and wrote this file.
+												----------------
+												9hrs TOTAL time spent
+
+Difficulties encountered:
+
+For system call tracing, I had to determine where system calls held their return values
+upon completion. Through research I found it was in the %eax register. I also didn't know
+where to implement the print statement for each system call. I initially tried to edit every
+single syscall with a "cprintf" statement, but that was way too much work, and so I implemented
+a "cprintf" statement in "syscall.c" to run everytime a system call was used.
+
+In the implementation of the system calls, I didn't know why variables were not being passed
+from the user level program to the system calls. I thought that something was wrong with the
+logic in my code. The problem turned out to be that the user and kernel levels have their own
+stacks, so the syscall could not access the variables placed on the user stack. To fix this,
+I used the "argint()" helper function to copy the variables from the user stack to the kernel
+stack. Once that problem was fixed, everything worked. 
