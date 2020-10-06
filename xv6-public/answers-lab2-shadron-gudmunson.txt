@@ -1,0 +1,11 @@
+syscall.c - adds syscall to list of syscalls 
+syscall.h - added system call and number
+user.h - added function definition, allows users to use
+defs.h - added function definition
+sysproc.c - added passthrough for parameters
+proc.h - add the nice member of the struct
+usys.S - defines syscall
+proc.c - defines the code for the function
+set_priority.c - the actual code that is called when calling the function
+get_priority.c - the actual code that is called when calling the function
+Makefile - add compilation targets

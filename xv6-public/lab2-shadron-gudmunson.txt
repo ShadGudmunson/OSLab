@@ -1,0 +1,14 @@
+ESTIMATE of time to complete lab: 10 hours
+Date    Time    Spent   Part    Work complete
+----------------------------------------------------
+9-12    18:45   1       1       Troubleshooting Qemu
+9-12    21:00   .25     1       printing curproc and EAX, not working
+9-13    11:45   2.5     1&2     realized that printing EAX before it is set is the problem, also make process name into an array and print the correct process name, start adding syscalls
+9-13    16:30   3       2       added syscalls 
+9-13    21:00   .75      2      tested syscalls and wrote documentation/reports
+----------------------------------------------------
+TOTAL 7.50
+
+Major dificulties encountered:
+Most of the difficulties that I encountered in this lab were learning xv6 and how things are layed out. 
+Another issue that I encountered was not knowing what definitions to put where for my syscalls, or how to pass parameters from userland to kernel space.
