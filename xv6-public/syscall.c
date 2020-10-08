@@ -105,6 +105,7 @@ extern int sys_write(void);
 extern int sys_uptime(void);
 extern int sys_set_priority(void);
 extern int sys_get_priority(void);
+extern int sys_cps(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -130,6 +131,7 @@ static int (*syscalls[])(void) = {
 [SYS_close]   sys_close,
 [SYS_set_priority]  sys_set_priority,
 [SYS_get_priority]  sys_get_priority,
+[SYS_cps] sys_cps,
 };
 /*
 static char* syscallnames[] = {
@@ -175,3 +177,4 @@ syscall(void)
     curproc->tf->eax = -1;
   }
 }
+

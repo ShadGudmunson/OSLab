@@ -116,3 +116,8 @@ sys_get_priority(void)
 
   return get_priority(pid);
 }
+
+int sys_cps(void)
+{
+  return cps();
+}
