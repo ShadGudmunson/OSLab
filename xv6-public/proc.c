@@ -319,7 +319,6 @@ wait(void)
 //  - swtch to start running that process
 //  - eventually that process transfers control
 //      via swtch back to the scheduler.
-// MODIFIED to be priority scheduled
 void
 scheduler(void)
 {
@@ -331,7 +330,8 @@ scheduler(void)
   for(;;){
     // Enable interrupts on this processor.
     sti();
-    // Takes 2 loops to find min priority number and then executes the process with min priority
+    minPriority = 40;
+
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
@@ -348,8 +348,8 @@ scheduler(void)
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
       if(p->state != RUNNABLE)
         continue;
-
-      if (p->nice == minPriority){    
+      
+      if (p->nice == minPriority){
         c->proc = p;
         switchuvm(p);
         p->state = RUNNING;
@@ -363,7 +363,6 @@ scheduler(void)
       }
     }
     release(&ptable.lock);
-
   }
 }
 
