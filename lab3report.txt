@@ -131,8 +131,8 @@ Casey Haynes
 ***************************************************
 Date:	Start Time:	End Time:	Elapsed:	Subject:
 10/6	5:00pm		5:30pm		0:30		Met with Shad to Discuss strategy
-10/8	8:30pm		11:30pm	3:00		Implemented Tasks 2 and 3
-10/9	12:00pm	2:30pm		2:30		Met with Shad, Implemented Task 4 together
+10/8	8:30pm		11:30pm		3:00		Implemented Tasks 2 and 3
+10/9	12:00pm		2:30pm		2:30		Met with Shad, Implemented Task 4 together
 10/9	4:00pm		4:45pm		0:45		Prepared Lab Report: Tasks 1, 2, and 3.
 					----
 				Total:	6:45
