@@ -1,7 +1,40 @@
-1.
-2.
+Lab3: Priority Scheduling for xv6
+Report
+Shadron Gudmunson and Casey Haynes
 
-3.
+Task 1.
+*****************************************************
+$ ps
+name 	 pid 	 state 	 priority
+init 	 1 	 SLEEPING 	 10
+sh 	 2 	 SLEEPING 	 10
+ps 	 3 	 RUNNING 	 10
+$ 
+
+Task 2.
+*****************************************************
+$ lab3test 4 &
+$ Parent 5 creating child 6
+Child 6 created
+ps
+name 	 pid 	 state 	 priority
+init 	 1 	 SLEEPING 	 10
+sh 	 2 	 SLEEPING 	 10
+lab3test 	 6 	 RUNNING 	 20
+lab3test 	 5 	 SLEEPING 	 10
+ps 	 7 	 RUNNING 	 10
+$ nice 5 18
+$ ps
+name 	 pid 	 state 	 priority
+init 	 1 	 SLEEPING 	 10
+sh 	 2 	 SLEEPING 	 10
+lab3test 	 6 	 RUNNABLE 	 20
+lab3test 	 5 	 SLEEPING 	 18
+ps 	 9 	 RUNNING 	 10
+$ 
+
+Task 3. 
+*******************************************************
 lab3test &; lab3test &; lab3test &
 PCarent 8Parent 5 creating child 7
 Child 7 created
@@ -78,4 +111,18 @@ lab3test 	 5 	 SLEEPING 	 10
 lab3test 	 7 	 RUNNABLE 	 20
 lab3test 	 8 	 SLEEPING 	 10
 lab3test 	 9 	 RUNNABLE 	 20
+
+EXPLANATION: As can be seen from the ps commands above,
+the three child processes are all either in RUNNABLE
+or RUNNING states. One processes runs at a time for a fixed
+"time quantum," and each process in the RUNNABLE state gets
+CPU time while alternating through. This is the nature of the 
+Round Robin scheduling algorithm. 
+
+Task 4. 
+****************************************************
+
+Task 5.
+****************************************************
+
 
