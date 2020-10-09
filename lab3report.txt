@@ -1,0 +1,81 @@
+1.
+2.
+
+3.
+lab3test &; lab3test &; lab3test &
+PCarent 8Parent 5 creating child 7
+Child 7 created
+h$ Pare creating child 9
+ild 9 created
+Child nt 10 creating c1hild 11
+1 created
+
+ps
+name 	 pid 	 state 	 priority
+init 	 1 	 SLEEPING 	 10
+sh 	 2 	 SLEEPING 	 10
+lab3test 	 11 	 RUNNABLE 	 20
+lab3test 	 10 	 SLEEPING 	 10
+lab3test 	 5 	 SLEEPING 	 10
+lab3test 	 7 	 RUNNABLE 	 20
+lab3test 	 8 	 SLEEPING 	 10
+lab3test 	 9 	 RUNNING 	 20
+ps 	 12 	 RUNNING 	 10
+
+ps 	 13 	 RUNNING 	 10
+$ ps
+name 	 pid 	 state 	 priority
+init 	 1 	 SLEEPING 	 10
+sh 	 2 	 SLEEPING 	 10
+lab3test 	 11 	 RUNNABLE 	 20
+lab3test 	 10 	 SLEEPING 	 10
+lab3test 	 5 	 SLEEPING 	 10
+lab3test 	 7 	 RUNNING 	 20
+lab3test 	 8 	 SLEEPING 	 10
+lab3test 	 9 	 RUNNABLE 	 20
+ps 	 14 	 RUNNING 	 10
+
+$ ps
+name 	 pid 	 state 	 priority
+init 	 1 	 SLEEPING 	 10
+sh 	 2 	 SLEEPING 	 10
+lab3test 	 11 	 RUNNABLE 	 20
+lab3test 	 10 	 SLEEPING 	 10
+lab3test 	 5 	 SLEEPING 	 10
+lab3test 	 7 	 RUNNABLE 	 20
+lab3test 	 8 	 SLEEPING 	 10
+lab3test 	 9 	 RUNNING 	 20
+
+$ ps
+name 	 pid 	 state 	 priority
+init 	 1 	 SLEEPING 	 10
+sh 	 2 	 SLEEPING 	 10
+lab3test 	 11 	 RUNNING 	 20
+lab3test 	 10 	 SLEEPING 	 10
+lab3test 	 5 	 SLEEPING 	 10
+lab3test 	 7 	 RUNNABLE 	 20
+lab3test 	 8 	 SLEEPING 	 10
+lab3test 	 9 	 RUNNABLE 	 20
+
+$ ps
+name 	 pid 	 state 	 priority
+init 	 1 	 SLEEPING 	 10
+sh 	 2 	 SLEEPING 	 10
+lab3test 	 11 	 RUNNABLE 	 20
+lab3test 	 10 	 SLEEPING 	 10
+lab3test 	 5 	 SLEEPING 	 10
+lab3test 	 7 	 RUNNABLE 	 20
+lab3test 	 8 	 SLEEPING 	 10
+lab3test 	 9 	 RUNNING 	 20
+
+$ ps
+name 	 pid 	 state 	 priority
+init 	 1 	 SLEEPING 	 10
+sh 	 2 	 SLEEPING 	 10
+lab3test 	 11 	 RUNNING 	 20
+lab3test 	 10 	 SLEEPING 	 10
+lab3test 	 5 	 SLEEPING 	 10
+lab3test 	 7 	 RUNNABLE 	 20
+lab3test 	 8 	 SLEEPING 	 10
+lab3test 	 9 	 RUNNABLE 	 20
+
