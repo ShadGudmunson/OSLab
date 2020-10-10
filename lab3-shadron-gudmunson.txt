@@ -1,0 +1,9 @@
+Shadron Gudmunson:
+***************************************************
+Date:	Start Time:	End Time:	Elapsed:	Subject:
+10/6	5:00pm		5:30pm		0:30		Met with Casey to discuss plan
+10/8	3:00pm		3:20pm		0:20		Implemented task 1
+10/9	12:00pm		2:30pm		2:30		Met with Shad, Implemented Task 4 together
+10/9	10:00pm		10:30pm		0:30		Compiled lab report Task 4, 5
+					----
+				Total:	4:20

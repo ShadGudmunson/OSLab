@@ -119,27 +119,90 @@ or RUNNING states. One processes runs at a time for a fixed
 CPU time while alternating through. This is the nature of the 
 Round Robin scheduling algorithm. 
 
-Task 4. 
-****************************************************
-
 Task 5.
 ****************************************************
 
-Time Logs: 
+init: starting sh
+$ lab3test &; lab3test &; lab3test &
+Parent 5 creating child 9
+$ Parent 7 creating child 10
+Child 9 created
+PChild 10 created
+arent 8 creating child 11
+Child 11 created
+ps
+name 	 pid 	 state 	 priority
+init 	 1 	 SLEEPING 	 10
+sh 	 2 	 SLEEPING 	 10
+lab3test 	 9 	 RUNNABLE 	 20
+lab3test 	 8 	 SLEEPING 	 10
+lab3test 	 5 	 SLEEPING 	 10
+lab3test 	 7 	 SLEEPING 	 10
+lab3test 	 10 	 RUNNING 	 20
+lab3test 	 11 	 RUNNABLE 	 20
+ps 	 12 	 RUNNING 	 10
+$ ps
+name 	 pid 	 state 	 priority
+init 	 1 	 SLEEPING 	 10
+sh 	 2 	 SLEEPING 	 10
+lab3test 	 9 	 RUNNABLE 	 20
+lab3test 	 8 	 SLEEPING 	 10
+lab3test 	 5 	 SLEEPING 	 10
+lab3test 	 7 	 SLEEPING 	 10
+lab3test 	 10 	 RUNNABLE 	 20
+lab3test 	 11 	 RUNNING 	 20
+ps 	 14 	 RUNNING 	 10
+$ set_priority 11 5
+$ ps
+name 	 pid 	 state 	 priority
+init 	 1 	 SLEEPING 	 10
+sh 	 2 	 SLEEPING 	 10
+lab3test 	 9 	 RUNNABLE 	 20
+lab3test 	 8 	 SLEEPING 	 10
+lab3test 	 5 	 SLEEPING 	 10
+lab3test 	 7 	 SLEEPING 	 10
+lab3test 	 10 	 RUNNABLE 	 20
+lab3test 	 11 	 RUNNING 	 5
+ps 	 14 	 RUNNING 	 10
+$ ps
+name 	 pid 	 state 	 priority
+init 	 1 	 SLEEPING 	 10
+sh 	 2 	 SLEEPING 	 10
+lab3test 	 9 	 RUNNABLE 	 20
+lab3test 	 8 	 SLEEPING 	 10
+lab3test 	 5 	 SLEEPING 	 10
+lab3test 	 7 	 SLEEPING 	 10
+lab3test 	 10 	 RUNNABLE 	 20
+lab3test 	 11 	 RUNNING 	 5
+ps 	 15 	 RUNNING 	 10
+$ ps
+name 	 pid 	 state 	 priority
+init 	 1 	 SLEEPING 	 10
+sh 	 2 	 SLEEPING 	 10
+lab3test 	 9 	 RUNNABLE 	 20
+lab3test 	 8 	 SLEEPING 	 10
+lab3test 	 5 	 SLEEPING 	 10
+lab3test 	 7 	 SLEEPING 	 10
+lab3test 	 10 	 RUNNABLE 	 20
+lab3test 	 11 	 RUNNING 	 5
+ps 	 16 	 RUNNING 	 10
+$ ps
+name 	 pid 	 state 	 priority
+init 	 1 	 SLEEPING 	 10
+sh 	 2 	 SLEEPING 	 10
+lab3test 	 9 	 RUNNABLE 	 20
+lab3test 	 8 	 SLEEPING 	 10
+lab3test 	 5 	 SLEEPING 	 10
+lab3test 	 7 	 SLEEPING 	 10
+lab3test 	 10 	 RUNNABLE 	 20
+lab3test 	 11 	 RUNNING 	 5
+ps 	 17 	 RUNNING 	 10
 
-Casey Haynes
-***************************************************
-Date:	Start Time:	End Time:	Elapsed:	Subject:
-10/6	5:00pm		5:30pm		0:30		Met with Shad to Discuss strategy
-10/8	8:30pm		11:30pm		3:00		Implemented Tasks 2 and 3
-10/9	12:00pm		2:30pm		2:30		Met with Shad, Implemented Task 4 together
-10/9	4:00pm		4:45pm		0:45		Prepared Lab Report: Tasks 1, 2, and 3.
-					----
-				Total:	6:45
-
-Shadron Gudmunson:
-***************************************************
-Date:	Start Time:	End Time:	Elapsed:	Subject:
-
-					----
-				Total:	
+EXPLANATION: As mentioned before the three child 
+processes all start in either the RUNNING or RUNNABLE
+state. Because all of the child processes start with
+the same priority this still functions much like the
+round robin scheduling algorithm. However when the
+3rd child (with pid 12) has its NICE value changed to
+5 the algorithm differs from the RR algorithm, only 
+running the process with the highest priority.	
