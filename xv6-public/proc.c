@@ -6,6 +6,7 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
+#include "stat.h"
 
 struct {
   struct spinlock lock;
@@ -609,4 +610,147 @@ cps()
    }
    release(&ptable.lock);
    return 22;
+}
+
+int
+thread_create(void (*fn)(void *), void *stack, void *arg)
+{
+  int i, pid;
+  struct proc *np;
+  struct proc *curproc = myproc();
+
+  // Allocate process.
+  if((np = allocproc()) == 0){
+    return -1;
+  }
+
+  np->sz = curproc->sz;
+  np->parent = curproc;
+
+  np->pgdir = curproc->pgdir;
+  *np->tf = *curproc->tf;
+  np->is_thread = 1;
+  np->tf->eax = 0;
+  np->tf->eip = (uint)fn;
+  np->stack = (char *)stack; 
+  np->tf->esp = (uint)stack + 4092;
+  *((uint *)(np->tf->esp)) = (uint)arg;
+  *((uint *)(np->tf->esp - 4)) = 0xFFFFFFFF;
+  np->tf->esp -= 4;
+  
+  for(i = 0; i < NOFILE; i++)
+    if(curproc->ofile[i])
+      np->ofile[i] = filedup(curproc->ofile[i]);
+  np->cwd = idup(curproc->cwd);
+
+  safestrcpy(np->name, curproc->name, sizeof(curproc->name));
+
+  pid = np->pid;
+
+  acquire(&ptable.lock);
+
+  np->state = RUNNABLE;
+
+  release(&ptable.lock);
+
+  return pid;
+}
+
+int
+thread_join()
+{
+  struct proc *p;
+  int havekids, pid;
+  struct proc *curproc = myproc();
+ 
+  acquire(&ptable.lock);
+  for (;;) {
+    havekids = 0;
+    for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+      if (p->parent != curproc || p->is_thread != 1)
+        continue;
+      havekids = 1;
+      if (p->state == ZOMBIE) {
+        pid = p->pid;
+        kfree(p->kstack);
+        p->kstack = 0;
+        p->state = UNUSED;
+        p->pid = 0;
+        p->parent = 0;
+        p->name[0] = 0;
+        p->killed = 0;
+        release(&ptable.lock);
+        return pid;
+      }
+    }
+
+    if (!havekids || curproc->killed) {
+      release(&ptable.lock);
+      return -1;
+    }
+    sleep(curproc, &ptable.lock);
+  }
+}
+
+int
+thread_exit()
+{
+  struct proc *p;
+  struct proc *curproc = myproc();
+  int fd;
+
+  if(curproc == initproc)
+    panic("init exiting");
+
+  for (fd = 0; fd < NOFILE; fd++) {
+    if (curproc -> ofile[fd]) {
+      fileclose(curproc -> ofile[fd]);
+      curproc -> ofile[fd] = 0;
+    }
+  }
+
+  begin_op();
+  iput(curproc -> cwd);
+  end_op();
+  curproc -> cwd = 0;
+
+  acquire(&ptable.lock);
+
+  // Parent might be sleeping in wait().
+  wakeup1(curproc->parent);
+
+  // Pass abandoned children to init.
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if(p->parent == curproc){
+      p->parent = initproc;
+      if(p->state == ZOMBIE)
+        wakeup1(initproc);
+    }
+  }
+
+  // Jump into the scheduler, never to return.
+  curproc->state = ZOMBIE;
+  sched();
+  panic("zombie exit");
+}
+
+int lock_init(lock_t *lk)
+{
+	lk->lock = UNLOCKED;
+	return 0;
+}
+
+int lock_acquire(lock_t * lk)
+{
+	while(xchg(&lk->lock, LOCKED)!= 0);
+	return 0;
+}
+
+int lock_release(lock_t * lk)
+{
+	if(lk->lock == LOCKED) {
+		xchg(&lk-> lock, UNLOCKED);
+	}
+
+	return 0;
 }

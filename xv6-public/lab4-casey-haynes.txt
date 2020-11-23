@@ -1,0 +1,15 @@
+LAB4 TIME LOG -- Casey Haynes
+
+Date:		From-To:	Task:
+11/1		16:00-20:00	Read LLNL tutorial on pthread, started implementing code
+11/2		10:00-17:00	Debugged and tried multiple implementations of threading API
+11/3		16:00-22:00	Asked Dr. Tong for help, started to implement new version of threading API
+11/4		12:00-16:30	Researched stack exchange, online solutions. Debugged and tried implementing MUTEX_lock and fixing threading API
+11/5		12:00-15:30	Debugged mutex_lock and threading API
+11/7		12:00-14:00	Implemented new threading API
+11/8		17:00-21:00	Implemented new mutex_lock, tried debugging thread_nosync (no luck). Wrote time log and README
+		-----------
+		TOTAL
+		31hrs 0min		
+
+**See README for summary of file alterations

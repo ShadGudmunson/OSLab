@@ -9,6 +9,7 @@ struct spinlock;
 struct sleeplock;
 struct stat;
 struct superblock;
+struct lock_t;
 
 // bio.c
 void            binit(void);
@@ -123,7 +124,12 @@ void            yield(void);
 int             set_priority(int, int);
 int             get_priority(int);
 int             cps(void);
-
+int		thread_create(void (*fn)(void *), void *, void *);
+int		thread_join(void);
+int		thread_exit(void);
+int		lock_acquire();
+int		lock_release();
+int		lock_init();
 // swtch.S
 void            swtch(struct context**, struct context*);
 

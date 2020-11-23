@@ -121,3 +121,33 @@ int sys_cps(void)
 {
   return cps();
 }
+
+int sys_thread_create(void (*fn)(void *), void *stack, void *arg)
+{
+  return thread_create(fn, stack, arg);
+}
+
+int sys_thread_join(void)
+{
+  return thread_join();
+}
+
+int sys_thread_exit(void)
+{
+  return thread_exit();
+}
+
+int sys_lock_acquire(struct lock_t *lk)
+{
+  return lock_acquire(lk);
+}
+
+int sys_lock_release(struct lock_t *lk)
+{
+  return lock_release(lk);
+}
+
+int sys_lock_init(struct lock_t *lk)
+{
+  return lock_init(lk);
+}
