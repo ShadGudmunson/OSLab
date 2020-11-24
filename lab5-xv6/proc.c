@@ -189,8 +189,8 @@ fork(void)
     return -1;
   }
 
-  // Copy process state from proc.
-  if((np->pgdir = copyuvm(curproc->pgdir, curproc->sz)) == 0){
+  // Copy process state from proc. CHANGE BACK to copyuvm() to remove CPU error (CH)
+  if((np->pgdir = copyuvm_cow(curproc->pgdir, curproc->sz)) == 0){
     kfree(np->kstack);
     np->kstack = 0;
     np->state = UNUSED;

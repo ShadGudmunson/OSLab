@@ -6,6 +6,7 @@
 #include "mmu.h"
 #include "proc.h"
 #include "elf.h"
+#include "spinlock.h"
 
 extern char data[];  // defined by kernel.ld
 pde_t *kpgdir;  // for use in scheduler()
@@ -344,6 +345,45 @@ bad:
   return 0;
 }
 
+pde_t*
+copyuvm_cow(pde_t *pgdir, uint sz)
+{
+	pde_t *d;
+	pte_t *pte;
+	uint pa, i, flags;
+	//Add run structure for reference count HERE (or pass it in) CH
+
+	if((d = setupkvm()) == 0) {
+		return 0;
+	}
+
+	for (i = 0; i < sz; i += PGSIZE) {
+		if((pte = walkpgdir(pgdir, (void *)i, 0)) == 0) {
+			panic("copyuvm: pte should exist");
+		}
+		if(!(*pte & PTE_P)) {
+			panic("copyuvm: page not present");
+		}
+
+		*pte = *pte | PTE_S;
+		*pte = *pte & ~PTE_W;
+
+		pa = PTE_ADDR(*pte);
+		flags = PTE_FLAGS(*pte);
+
+		//increment reference count HERE
+
+		if(mappages(d, (void *)i, PGSIZE, pa, flags) < 0) {
+			goto bad;
+		}
+	}
+	lcr3(V2P(pgdir));
+	return d;
+
+bad:
+	freevm(d);
+	return 0;
+}
 //PAGEBREAK!
 // Map user virtual address to kernel address.
 char*

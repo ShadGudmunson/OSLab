@@ -1,9 +1,15 @@
 Task 1: getNumFreePages() syscall
 	*syscall.h
 	*defs.h: numFreePages() under kalloc.c
-	*kalloc.c: Functional code for syscall
+	*kalloc.c: Functional code for syscall (added uint free_pages to kmem structure)
 	*user.h: getNumFreePages()
 	*sysproc.c: int sys_getNumFreePages()	
 	*usys.S: SYSCALL(getNumFreePages)
 	*syscall.c
-	TIME: 8-9AM 11/23/2020 
+	*Made github repo
+	TIME: 8-9:30AM 11/23/2020 
+
+Task 2: *vm.c, added copyuvm_cow
+	*defs.h, added definition for copyuvm_cow
+	*proc.c, replaced call to copyuvm with copyuvm_cow in fork()
+	*mmu.h, Added PTE_S, Shared Page
