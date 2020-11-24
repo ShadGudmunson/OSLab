@@ -24,6 +24,8 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 int getNumFreePages(void);
+int inc_count(void);
+int dec_count(void);
 
 // ulib.c
 int stat(const char*, struct stat*);

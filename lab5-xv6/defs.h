@@ -9,7 +9,6 @@ struct spinlock;
 struct sleeplock;
 struct stat;
 struct superblock;
-
 // bio.c
 void            binit(void);
 struct buf*     bread(uint, uint);
@@ -64,11 +63,17 @@ extern uchar    ioapicid;
 void            ioapicinit(void);
 
 // kalloc.c
+struct run {
+  struct run *next;
+  int ref;
+};
 char*           kalloc(void);
 void            kfree(char*);
 void            kinit1(void*, void*);
 void            kinit2(void*, void*);
-uint		numFreePages(void);
+uint		    numFreePages(void);
+void            inc_count(struct run*);
+void            dec_count(struct run*);            
 
 // kbd.c
 void            kbdintr(void);

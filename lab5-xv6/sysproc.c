@@ -96,3 +96,28 @@ sys_getNumFreePages(void)
 {
 	return numFreePages();
 }
+
+int
+sys_inc_count(void)
+{
+  int mem;
+
+  if(argint(0, &mem) < 0)
+    return -1;
+  
+	inc_count((struct run*)mem);
+  return 0;
+}
+
+int
+sys_dec_count(void)
+{
+
+  int mem;
+
+  if(argint(0, &mem) < 0)
+    return -1;
+
+	dec_count((struct run*)mem);
+  return 0;
+}

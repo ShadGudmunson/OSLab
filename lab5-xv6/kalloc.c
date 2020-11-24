@@ -13,9 +13,10 @@ void freerange(void *vstart, void *vend);
 extern char end[]; // first address after kernel loaded from ELF file
                    // defined by the kernel linker script in kernel.ld
 
-struct run {
-  struct run *next;
-};
+// struct run {
+//   struct run *next;
+//   int ref;
+// };
 
 struct {
   struct spinlock lock;
@@ -101,4 +102,29 @@ uint numFreePages(void)
 	uint free_pages = kmem.free_pages;
 	release(&kmem.lock);
 	return free_pages;
+}
+
+void inc_count(struct run *mem){
+
+  if(kmem.use_lock){
+    acquire(&kmem.lock);
+  } 
+  
+  (*mem).ref++;
+
+  if(kmem.use_lock){
+    release(&kmem.lock);
+  }
+}
+
+void dec_count(struct run *mem){
+  if(kmem.use_lock){
+    acquire(&kmem.lock);
+  } 
+  
+  (*mem).ref--;
+
+  if(kmem.use_lock){
+    release(&kmem.lock);
+  }
 }

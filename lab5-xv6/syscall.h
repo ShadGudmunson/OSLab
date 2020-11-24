@@ -21,3 +21,5 @@
 #define SYS_mkdir  20
 #define SYS_close  21
 #define SYS_getNumFreePages 22
+#define SYS_inc_count 23
+#define SYS_dec_count 24
