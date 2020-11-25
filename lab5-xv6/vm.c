@@ -372,6 +372,7 @@ copyuvm_cow(pde_t *pgdir, uint sz)
 		flags = PTE_FLAGS(*pte);
 
 		//increment reference count HERE
+    //inc_count()
 
 		if(mappages(d, (void *)i, PGSIZE, pa, flags) < 0) {
 			goto bad;
@@ -423,6 +424,39 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
     va = va0 + PGSIZE;
   }
   return 0;
+}
+
+void
+handle_pgflt(){
+  uint fault_addr = rcr2(); // Retrive falting address
+  struct proc *curproc = myproc(); // Get current process
+
+  pte_t *pg = walkpgdir(curproc->pgdir, (void *)fault_addr, 0); // Go through all of the entries in the page table and return the page to me if found
+
+
+  if (pg == 0){ // If walkpgdir does not find virtual address of fault in its page table
+    cprintf("illegal address"); // Print error message
+    kill(curproc->pid); // Kill current process
+  } else {
+    cprintf("We made it here, what now?\n"); // debugging message
+    /* Currently stuck on this because I dont understand how to reach the run structure. I can get the process and the page table, and even the page entry.
+    However this does not in any way (as far as I have found) refer to the run structure.
+    The reason that I am using the run struct instead of adding it somewhere else is because the lab says that is where we should put it.
+    */
+
+    /*
+    Theoretical program flow
+    get run struct of pte
+    check # of references
+    if > 1 copy page replace w/ writable copy dec ref count
+    if 1 restore write permission
+
+    either way clear tlb using:
+    lcr3(V2P(curproc->pgdir)); // clear TLB. Needs to be done in either case.
+
+    */
+  }
+
 }
 
 //PAGEBREAK!
