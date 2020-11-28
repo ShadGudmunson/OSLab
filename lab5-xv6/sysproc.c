@@ -105,7 +105,7 @@ sys_inc_count(void)
   if(argint(0, &mem) < 0)
     return -1;
   
-	inc_count((struct run*)mem);
+	inc_count((uint *)mem);
   return 0;
 }
 
@@ -118,6 +118,6 @@ sys_dec_count(void)
   if(argint(0, &mem) < 0)
     return -1;
 
-	dec_count((struct run*)mem);
+	dec_count((uint *)mem);
   return 0;
 }

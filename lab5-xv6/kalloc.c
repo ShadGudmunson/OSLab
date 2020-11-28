@@ -8,22 +8,24 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "spinlock.h"
+#include "kalloc.h"
 
 void freerange(void *vstart, void *vend);
 extern char end[]; // first address after kernel loaded from ELF file
                    // defined by the kernel linker script in kernel.ld
 
-// struct run {
-//   struct run *next;
-//   int ref;
-// };
+struct run {
+  struct run *next;
+  int ref;
+};
 
-struct {
-  struct spinlock lock;
-  int use_lock;
-  struct run *freelist;
-  uint free_pages; //stores number of free pages (CH)
-} kmem;
+// struct {
+//   struct spinlock lock;
+//   int use_lock;
+//   struct run *freelist;
+//   uint free_pages; //stores number of free pages (CH)
+//   uint pg_recount[PHYSTOP >> PTXSHIFT]; // Stores reference count (SG)
+// } kmem;
 
 // Initialization happens in two phases.
 // 1. main() calls kinit1() while still using entrypgdir to place just
@@ -104,27 +106,35 @@ uint numFreePages(void)
 	return free_pages;
 }
 
-void inc_count(struct run *mem){
+void inc_count(uint *v){
 
   if(kmem.use_lock){
     acquire(&kmem.lock);
   } 
-  
-  (*mem).ref++;
+
+  if((uint)v % PGSIZE || V2P(v) >= PHYSTOP || (char *)v < end ){
+    kmem.pg_recount[V2P(PTE_ADDR(v))]++;
+  }
 
   if(kmem.use_lock){
     release(&kmem.lock);
   }
 }
 
-void dec_count(struct run *mem){
+void dec_count(uint *v){
   if(kmem.use_lock){
     acquire(&kmem.lock);
   } 
   
-  (*mem).ref--;
+  if((uint)v % PGSIZE || V2P(v) >= PHYSTOP || (char *)v < end){
+    kmem.pg_recount[V2P(PTE_ADDR(v))]--;
+  }
 
   if(kmem.use_lock){
     release(&kmem.lock);
   }
+}
+
+uint get_count(uint *v){
+  return kmem.pg_recount[V2P(PTE_ADDR(v))];
 }

@@ -7,6 +7,7 @@
 #include "proc.h"
 #include "elf.h"
 #include "spinlock.h"
+#include "kalloc.h"
 
 extern char data[];  // defined by kernel.ld
 pde_t *kpgdir;  // for use in scheduler()
@@ -365,14 +366,14 @@ copyuvm_cow(pde_t *pgdir, uint sz)
 			panic("copyuvm: page not present");
 		}
 
-		*pte = *pte | PTE_S;
+		//*pte = *pte | PTE_S;
 		*pte = *pte & ~PTE_W;
 
 		pa = PTE_ADDR(*pte);
 		flags = PTE_FLAGS(*pte);
 
 		//increment reference count HERE
-    //inc_count()
+    inc_count(pte);
 
 		if(mappages(d, (void *)i, PGSIZE, pa, flags) < 0) {
 			goto bad;
@@ -430,19 +431,56 @@ void
 handle_pgflt(){
   uint fault_addr = rcr2(); // Retrive falting address
   struct proc *curproc = myproc(); // Get current process
+  int safe = 0;
+  pte_t *fault_page = 0;
+  pte_t *pte;
+  char *mem;
 
-  pte_t *pg = walkpgdir(curproc->pgdir, (void *)fault_addr, 0); // Go through all of the entries in the page table and return the page to me if found
+  //uint sz = curproc->sz;
 
+  for(int i = 0; i < curproc->sz; i += PGSIZE){
+    pte = walkpgdir(curproc->pgdir, (void*)(fault_addr), 0);
+    if (pte != 0){
+      cprintf("WE FOUND A PAGE!!!!!!!!!");
+    }
+    uint paddr = PTE_ADDR(*pte);
+    if(fault_addr >= (uint)P2V(paddr) && fault_addr <= (uint)(P2V(paddr) + PGSIZE)){
+      safe = 1;
+      fault_page = pte;
+      break;
+    } else {
+      //cprintf("Fault = %x, page = %x\n", fault_addr, P2V(paddr));
+    }
+  }
 
-  if (pg == 0){ // If walkpgdir does not find virtual address of fault in its page table
-    cprintf("illegal address"); // Print error message
+  if (!safe){
+    //cprintf("illegal address\n"); // Print error message
     kill(curproc->pid); // Kill current process
   } else {
-    cprintf("We made it here, what now?\n"); // debugging message
-    /* Currently stuck on this because I dont understand how to reach the run structure. I can get the process and the page table, and even the page entry.
-    However this does not in any way (as far as I have found) refer to the run structure.
-    The reason that I am using the run struct instead of adding it somewhere else is because the lab says that is where we should put it.
-    */
+
+
+    if (!(*fault_page & PTE_P)){
+      panic("page not present\n");
+    } else if (*fault_page & PTE_W){
+      panic("page already writable\n");
+    }
+    
+    uint pa = PTE_ADDR(*fault_page);
+
+    if(get_count((uint*)pte) > 1){
+      dec_count(&pa);
+
+      if((mem = kalloc()) == 0){
+        panic("FALIED ALLOCATION");
+      }
+      memmove(mem, (char*)pa, PGSIZE);
+
+    } else {
+      *pte |= PTE_W;
+    }
+
+    lcr3(V2P(curproc->pgdir)); // clear TLB. Needs to be done in either case.
+
 
     /*
     Theoretical program flow
@@ -450,9 +488,6 @@ handle_pgflt(){
     check # of references
     if > 1 copy page replace w/ writable copy dec ref count
     if 1 restore write permission
-
-    either way clear tlb using:
-    lcr3(V2P(curproc->pgdir)); // clear TLB. Needs to be done in either case.
 
     */
   }
