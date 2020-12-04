@@ -14,3 +14,7 @@ Task 3: *vm.c, added copyuvm_cow
 	*proc.c, replaced call to copyuvm with copyuvm_cow in fork()
 	*mmu.h, Added PTE_S, Shared Page
 	TIME: 8-10:20AM 11/24/2020
+
+Task 4:
+	*Tried to implement with Shad
+	TIME: 9AM-1PM, 3PM-7PM 11/27/2020
