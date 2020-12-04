@@ -13,10 +13,10 @@ Task 3: *vm.c, added copyuvm_cow
 	*defs.h, added definition for copyuvm_cow
 	*proc.c, replaced call to copyuvm with copyuvm_cow in fork()
 	*mmu.h, Added PTE_S, Shared Page
-	TIME: 8-10:20AM 11/24/2020
+	TIME: 8-10:30AM 11/24/2020
 
 Task 4:
-	*Tried to implement with Shad
+	*Tried to implement stuff with Shad
 	TIME: 9AM-1PM, 3PM-7PM 11/27/2020
 
 	*Tried Debugging
@@ -25,3 +25,5 @@ Task 4:
 Task 5:
 	*Tried to wrap up loose ends on the test program and with task 4 with Shad
 	TIME: 9-10:30am, 12/4/2020
+
+	TOTAL TIME: 16:00
