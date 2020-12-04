@@ -11,7 +11,9 @@
 void
 testcow(void)
 {
-  int n, pid;
+  int n, pid, var;
+
+  var = 0;
 
   printf(1, "fork test\n");
 
@@ -19,8 +21,16 @@ testcow(void)
     pid = fork();
     if(pid < 0)
       break;
-    if(pid == 0)
+    if(pid == 0){
+      printf(1, "var address: %d", &var);
+      printf(1, "number of free pages before write: %d", getNumFreePages());
+      var++;
+      printf(1,"var:%d\n", var);
+      printf(1, "number of free pages after write: %d", getNumFreePages());
+
       exit();
+
+    }
   }
 
   if(n == N){
