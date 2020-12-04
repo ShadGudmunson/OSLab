@@ -21,3 +21,7 @@ Task 4:
 
 	*Tried Debugging
 	TIME: 12-1:30PM, 12/2/2020
+
+Task 5:
+	*Tried to wrap up loose ends on the test program and with task 4 with Shad
+	TIME: 9-10:30am, 12/4/2020
