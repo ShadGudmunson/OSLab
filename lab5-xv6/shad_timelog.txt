@@ -1,0 +1,31 @@
+11/23 
+Task 2:
+    Implemented task 2, started task 4:
+    TIME: 7:30PM-9:30PM 11/23/2020
+    defs.h: added inc_count() and dec_count() under kalloc.c
+    kalloc.c: added code for inc_count and dec_count
+    syscall.h: definitions
+    sysproc.c: varible passing
+    user.h: definitions
+    usys.S: syscalls
+
+Task 4:
+    *Attempted to implement:
+    TIME: 8PM-11PM 11/24/2020
+    defs.h: definition under vm.c
+    mmu.h: formatting fix
+    trap.c: added given pgflt code
+    vm.c: implemented code for handle_pgflt()
+
+Task 4/5:
+	*Tried to implement with Casey
+	TIME: 9AM-1PM, 3PM-7PM 11/27/2020
+    defs.h: changing definition of inc_count and dec_count 
+    kalloc.c changed pg_count implementation
+    kalloc.h added definitions
+    Makefile: testcow
+    testcow.c: added file
+    vm.c: added functional code
+
+	*Tried Debugging w/ Casey
+	TIME: 9-10:30PM, 12/4/2020
